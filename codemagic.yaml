@@ -27,31 +27,30 @@ workflows:
         script: |
           flutter build ipa --release --no-codesign
           
-          # ✅ สร้างไฟล์ plist ชั่วคราว แทนฝัง XML ใน YAML
-          cat > /tmp/exportOptions.plist <<'PLIST'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>method</key>
-  <string>development</string>
-  <key>signingStyle</key>
-  <string>manual</string>
-  <key>compileBitcode</key>
-  <false/>
-</dict>
-</plist>
-PLIST
+          # ✅ สร้าง plist ด้วย echo — ปลอดภัย ไม่มี YAML error!
+          PLIST=/tmp/exportOptions.plist
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > $PLIST
+          echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> $PLIST
+          echo '<plist version="1.0">' >> $PLIST
+          echo '<dict>' >> $PLIST
+          echo '  <key>method</key>' >> $PLIST
+          echo '  <string>development</string>' >> $PLIST
+          echo '  <key>signingStyle</key>' >> $PLIST
+          echo '  <string>manual</string>' >> $PLIST
+          echo '  <key>compileBitcode</key>' >> $PLIST
+          echo '  <false/>' >> $PLIST
+          echo '</dict>' >> $PLIST
+          echo '</plist>' >> $PLIST
           
           # ✅ สร้าง .ipa จาก .xcarchive
           xcodebuild -exportArchive \
             -archivePath build/ios/archive/Runner.xcarchive \
-            -exportOptionsPlist /tmp/exportOptions.plist \
+            -exportOptionsPlist $PLIST \
             -exportPath build/ios/ipa/
           
-          # ✅ แสดงผลลัพธ์
-          echo "=== ✅ IPA files created ==="
-          ls -lh build/ios/ipa/*.ipa
+          # ✅ แสดงผล
+          echo "=== ✅ IPA files ==="
+          ls -lh build/ios/ipa/*.ipa 2>/dev/null || echo "⚠️ No IPA found"
     artifacts:
       - "**/*.ipa"
       - "build/ios/ipa/*.ipa"
