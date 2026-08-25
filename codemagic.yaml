@@ -9,7 +9,7 @@ workflows:
     scripts:
       - name: Flutter pub get
         script: flutter pub get
-      - name: Generate all iOS files automatically
+      - name: Generate iOS project
         script: flutter create --platforms=ios --org com.cashhub .
       - name: Build iOS app
         script: flutter build ios --release --no-codesign
