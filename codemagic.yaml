@@ -25,10 +25,11 @@ workflows:
           pod install --repo-update
       - name: Build iOS app
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --no-codesign
+          echo "=== Looking for IPA files ==="
+          find . -name "*.ipa" -print
     artifacts:
       - "**/*.ipa"
       - "build/ios/ipa/*.ipa"
-      - "build/ios/archive/*.xcarchive"
       - /tmp/codemagic*/logs/*.log
       - flutter_drive.log
