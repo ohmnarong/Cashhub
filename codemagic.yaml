@@ -14,7 +14,9 @@ workflows:
       - name: Update iOS deployment target to 13.0
         script: |
           cd ios
-          sed -i '' "s/platform :ios, '.*'/platform :ios, '13.0'/g" Podfile || true
+          sed -i '' "s/platform :ios, '.*'/platform :ios, '13.0'/g" Podfile
+          cat Podfile | grep "platform :ios"
+          sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 13.0;/g" Runner.xcodeproj/project.pbxproj
       - name: Build iOS app
         script: flutter build ipa --release --no-codesign
     artifacts:
