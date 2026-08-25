@@ -9,16 +9,9 @@ workflows:
     scripts:
       - name: Flutter pub get
         script: flutter pub get
-      - name: Create iOS folder if missing
-        script: |
-          if [ ! -d "ios" ]; then
-            flutter create --platforms=ios .
-          fi
-      - name: Flutter build iOS
+      - name: Generate all iOS files automatically
+        script: flutter create --platforms=ios --org com.cashhub .
+      - name: Build iOS app
         script: flutter build ios --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
-    publishing:
-      email:
-        recipients:
-          - ohmnarongsak2001@gmail.com
