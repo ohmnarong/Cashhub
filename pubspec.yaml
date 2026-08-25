@@ -1,10 +1,9 @@
 name: cashhub
 description: CashHub - ช้อปปิ้ง คืนเงิน แนะนำเพื่อนได้คอม
 version: 1.0.0+1
-
-environment:
-  sdk: ">=3.3.0 <4.0.0"
-
+  environment:
+  sdk: '>=3.3.0 <4.0.0'
+  ios: '13.0'
 dependencies:
   flutter:
     sdk: flutter
