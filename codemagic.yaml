@@ -7,16 +7,13 @@ workflows:
       flutter: 3.24.0
       xcode: 16.0
       cocoapods: default
-    ios_signing:
-      distribution_type: app_store
-      bundle_identifier: com.ohmnarong.cashhub
     scripts:
       - name: Get Flutter packages
         script: |
           flutter pub get
       - name: Install CocoaPods dependencies
         script: |
-          find . -name "Podfile" -execdir pod install \;
+          cd ios && pod install --repo-update
       - name: Generate iOS project
         script: |
           flutter create --platforms=ios .
@@ -25,7 +22,7 @@ workflows:
           cd ios
           sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/g' Podfile
           sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 13.0;/g' Runner.xcodeproj/project.pbxproj
-      - name: Build iOS app
+      - name: Build iOS app (no code sign)
         script: |
           flutter build ipa --release --no-codesign
     artifacts:
