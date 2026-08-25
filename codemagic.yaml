@@ -10,7 +10,11 @@ workflows:
       - name: Flutter pub get
         script: flutter pub get
       - name: Generate iOS project
-        script: flutter create --platforms=ios --org com.cashhub .
+        script: flutter create --platforms=ios .
+      - name: Update iOS deployment target to 13.0
+        script: |
+          cd ios
+          sed -i '' "s/platform :ios, '.*'/platform :ios, '13.0'/g" Podfile || true
       - name: Build iOS app
         script: flutter build ipa --release --no-codesign
     artifacts:
