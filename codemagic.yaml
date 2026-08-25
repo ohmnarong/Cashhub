@@ -7,9 +7,6 @@ workflows:
       flutter: 3.24.0
       xcode: 16.0
       cocoapods: default
-    ios_signing:
-      distribution_type: app_store
-      bundle_identifier: com.ohmnarong.cashhub   # ✅ เปลี่ยนเป็นของคุณ!
     scripts:
       - name: Get Flutter packages
         script: |
@@ -28,7 +25,7 @@ workflows:
           pod install --repo-update
       - name: Build iOS app
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/codemagic*/logs/*.log
