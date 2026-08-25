@@ -11,9 +11,6 @@ workflows:
       - name: Get Flutter packages
         script: |
           flutter pub get
-      - name: Install CocoaPods dependencies
-        script: |
-          cd ios && pod install --repo-update
       - name: Generate iOS project
         script: |
           flutter create --platforms=ios .
@@ -22,6 +19,10 @@ workflows:
           cd ios
           sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/g' Podfile
           sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 13.0;/g' Runner.xcodeproj/project.pbxproj
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod install --repo-update
       - name: Build iOS app (no code sign)
         script: |
           flutter build ipa --release --no-codesign
